@@ -1,7 +1,42 @@
 import { NextResponse } from "next/server";
+import {
+  buildInternalLeadEmail,
+  buildLeadConfirmationEmail,
+  type LeadRequestMetadata,
+} from "@/lib/mail/leadEmails";
+import { getMailjetConfigurationFromEnv, sendMailjetEmail } from "@/lib/mail/mailjet";
 import { leadSchema, sanitizeLeadPayload } from "@/lib/schemas/lead";
 
-const N8N_WEBHOOK_URL = process.env.N8N_WEBHOOK_URL;
+export const runtime = "nodejs";
+
+function resolveClientIp(request: Request): string {
+  const forwardedFor = request.headers.get("x-forwarded-for");
+
+  if (forwardedFor) {
+    const [firstIp] = forwardedFor.split(",");
+
+    if (firstIp && firstIp.trim().length > 0) {
+      return firstIp.trim();
+    }
+  }
+
+  const realIp = request.headers.get("x-real-ip");
+
+  if (realIp && realIp.trim().length > 0) {
+    return realIp.trim();
+  }
+
+  return "No disponible";
+}
+
+function getLeadRequestMetadata(request: Request): LeadRequestMetadata {
+  return {
+    submittedAtIso: new Date().toISOString(),
+    ipAddress: resolveClientIp(request),
+    userAgent: request.headers.get("user-agent")?.trim() || "No disponible",
+    referer: request.headers.get("referer")?.trim() || "No disponible",
+  };
+}
 
 export async function POST(request: Request): Promise<Response> {
   let payload: unknown;
@@ -30,46 +65,64 @@ export async function POST(request: Request): Promise<Response> {
     return NextResponse.json({ ok: true }, { status: 200 });
   }
 
-  if (!N8N_WEBHOOK_URL) {
+  const mailjetConfigResult = getMailjetConfigurationFromEnv();
+
+  if (!mailjetConfigResult.ok) {
     return NextResponse.json(
       {
-        ok: true,
-        queued: false,
-        message: "Webhook pendiente de configuración en entorno.",
+        message: "Mailjet no esta configurado en entorno.",
+        missingEnv: mailjetConfigResult.missingKeys,
       },
-      { status: 202 },
+      { status: 503 },
     );
   }
 
+  const mailjetConfig = mailjetConfigResult.config;
+  const leadRequestMetadata = getLeadRequestMetadata(request);
+
   try {
-    const webhookResponse = await fetch(N8N_WEBHOOK_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(sanitizedPayload),
-      cache: "no-store",
-    });
+    const internalLeadEmail = buildInternalLeadEmail(
+      sanitizedPayload,
+      leadRequestMetadata,
+      mailjetConfig.leadInboxEmail,
+    );
 
-    if (!webhookResponse.ok) {
-      const responseText = await webhookResponse.text();
-
-      return NextResponse.json(
-        {
-          message: "No se pudo procesar el lead en n8n.",
-          detail: responseText.slice(0, 400),
-        },
-        { status: 502 },
-      );
-    }
-
-    return NextResponse.json({ ok: true }, { status: 200 });
-  } catch {
+    await sendMailjetEmail(mailjetConfig, internalLeadEmail);
+  } catch (error) {
     return NextResponse.json(
       {
-        message: "Error de conexión con la automatización.",
+        message: "No se pudo enviar la notificacion interna del lead.",
+        detail: error instanceof Error ? error.message.slice(0, 400) : "Error desconocido",
       },
       { status: 502 },
     );
   }
+
+  let confirmationSent = true;
+
+  try {
+    const leadConfirmationEmail = buildLeadConfirmationEmail(sanitizedPayload);
+    await sendMailjetEmail(mailjetConfig, leadConfirmationEmail);
+  } catch (error) {
+    confirmationSent = false;
+
+    console.error("Mailjet confirmation email failed", {
+      detail: error instanceof Error ? error.message : "Unknown error",
+      leadType: sanitizedPayload.tipoUsuario,
+      email: sanitizedPayload.email,
+    });
+  }
+
+  if (!confirmationSent) {
+    return NextResponse.json(
+      {
+        ok: true,
+        confirmationSent: false,
+        message: "Lead recibido. El equipo fue notificado, pero fallo el correo de confirmacion.",
+      },
+      { status: 200 },
+    );
+  }
+
+  return NextResponse.json({ ok: true, confirmationSent: true }, { status: 200 });
 }

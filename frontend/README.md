@@ -1,5 +1,19 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Lead email pipeline (Mailjet)
+
+This project sends lead notifications and confirmation emails from the API route:
+
+- `src/app/api/lead/route.ts`
+
+Configuration guide:
+
+- `docs/mailjet-setup.md`
+
+Environment variables reference:
+
+- `.env.example`
+
 ## Getting Started
 
 First, run the development server:
