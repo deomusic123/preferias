@@ -31,6 +31,8 @@ export type MailjetConfiguration = {
   fromEmail: string;
   fromName: string;
   leadInboxEmail: string;
+  replyToEmail?: string;
+  replyToName?: string;
 };
 
 type MailjetConfigResult =
@@ -51,6 +53,7 @@ type MailjetApiRecipient = {
 type MailjetApiMessage = {
   From: MailjetApiRecipient;
   To: MailjetApiRecipient[];
+  ReplyTo?: MailjetApiRecipient;
   Subject: string;
   TextPart: string;
   HTMLPart: string;
@@ -94,6 +97,8 @@ export function getMailjetConfigurationFromEnv(): MailjetConfigResult {
       fromEmail: process.env.MAILJET_FROM_EMAIL as string,
       fromName: process.env.MAILJET_FROM_NAME?.trim() || "Alliance 2.0",
       leadInboxEmail: process.env.LEAD_INBOX_EMAIL as string,
+      replyToEmail: process.env.MAILJET_REPLY_TO_EMAIL?.trim() || undefined,
+      replyToName: process.env.MAILJET_REPLY_TO_NAME?.trim() || undefined,
     },
   };
 }
@@ -102,6 +107,16 @@ export async function sendMailjetEmail(
   config: MailjetConfiguration,
   email: MailjetOutboundEmail,
 ): Promise<void> {
+  const replyTo =
+    config.replyToEmail && config.replyToEmail.length > 0
+      ? {
+          Email: config.replyToEmail,
+          ...(config.replyToName && config.replyToName.length > 0
+            ? { Name: config.replyToName }
+            : {}),
+        }
+      : undefined;
+
   const payload: MailjetApiRequestBody = {
     Messages: [
       {
@@ -110,6 +125,7 @@ export async function sendMailjetEmail(
           Name: config.fromName,
         },
         To: [toApiRecipient(email.to)],
+        ...(replyTo ? { ReplyTo: replyTo } : {}),
         Subject: email.subject,
         TextPart: email.textPart,
         HTMLPart: email.htmlPart,

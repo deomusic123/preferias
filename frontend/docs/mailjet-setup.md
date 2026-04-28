@@ -8,6 +8,12 @@ Esta guia configura el flujo completo de correos para leads Productor/Inversor u
 2. Verificar dominio o remitente para `MAILJET_FROM_EMAIL`.
 3. Configurar SPF, DKIM y DMARC en DNS para buena entregabilidad.
 
+### Recomendacion critica de entregabilidad
+
+- No usar como `MAILJET_FROM_EMAIL` un dominio de tercero (ej: `@proton.me`, `@gmail.com`).
+- Usar un remitente de dominio propio autenticado en Mailjet (ej: `noreply@ceapargentina.com`).
+- Si quieres recibir respuestas en otra casilla, usar `MAILJET_REPLY_TO_EMAIL`.
+
 ## 2. Configurar variables en Vercel
 
 Agregar estas variables en el proyecto de Vercel:
@@ -17,6 +23,9 @@ Agregar estas variables en el proyecto de Vercel:
 - `MAILJET_FROM_EMAIL`
 - `MAILJET_FROM_NAME` (ej. `Alliance 2.0`)
 - `LEAD_INBOX_EMAIL` (casilla que recibe la ficha completa del lead)
+- `MAILJET_REPLY_TO_EMAIL` (opcional)
+- `MAILJET_REPLY_TO_NAME` (opcional)
+- `MAILJET_EVENTS_SECRET` (opcional, recomendado)
 
 Referencia local: `.env.example`.
 
@@ -58,3 +67,17 @@ Correos implementados:
    - Llegada al correo del lead
 4. Repetir con lead Inversor.
 5. Revisar logs de Vercel si hay error de credenciales o remitente.
+
+## 7. Diagnostico de entrega con Event API (recomendado)
+
+Se implemento un endpoint receptor de eventos:
+
+- `POST /api/mailjet/events`
+
+Configuracion sugerida en Mailjet (Event API):
+
+1. URL del webhook: `https://TU_DOMINIO/api/mailjet/events?token=TU_TOKEN`
+2. En Vercel, setear `MAILJET_EVENTS_SECRET=TU_TOKEN`.
+3. Activar eventos: sent, bounce, blocked, deferred, spam, unsub.
+
+Los eventos quedan en logs de Vercel y permiten detectar por que un correo no llega a inbox.
