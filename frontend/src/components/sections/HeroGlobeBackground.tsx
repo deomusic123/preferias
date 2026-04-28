@@ -119,8 +119,8 @@ export function HeroGlobeBackground({ className }: HeroGlobeBackgroundProps) {
     const drawScene = (time: number): void => {
       context.clearRect(0, 0, width, height);
 
-      const centerX = width * 0.56;
-      const centerY = height * 0.56;
+      const centerX = width * 0.5;
+      const centerY = height * 0.5;
       const globeRadius = Math.min(width, height) * 0.42;
       const horizontalRotation = 60 + Math.sin(time * 0.00008) * 4.2;
       const verticalRotation = 24 + Math.sin(time * 0.00006) * 1.8;
