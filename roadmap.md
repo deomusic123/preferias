@@ -40,3 +40,20 @@ Diagnosticar por que los correos no llegaban a inbox aunque la API devolvia exit
 - Soporte Reply-To: `frontend/src/lib/mail/mailjet.ts`
 - Entorno saneado: `frontend/.env.example`
 - Guia actualizada: `frontend/docs/mailjet-setup.md`
+
+### 2026-04-28 - Rediseno premium del mail interno de ventas
+
+#### Objetivo
+Elevar la calidad visual y operativa del correo interno de leads para el equipo comercial, con branding CEAP, estructura por secciones y acciones rapidas.
+
+#### Gates
+- Gate 1: Redisenar template interno con estilo corporativo profesional.
+- Gate 2: Mejorar legibilidad separando datos generales, detalle de perfil y trazabilidad tecnica.
+- Gate 3: Agregar acciones rapidas para responder o llamar al lead desde el correo.
+- Gate 4: Mantener compatibilidad con clientes de correo (HTML table-based + version texto).
+- Gate 5: Validar build/lint y publicar en main.
+
+#### Evidencia
+- Template interno actualizado: `frontend/src/lib/mail/leadEmails.ts`
+- Build OK: `npm run build`
+- Lint OK con warning preexistente: `npm run lint`

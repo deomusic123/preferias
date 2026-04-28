@@ -87,18 +87,6 @@ function getLeadSpecificFields(lead: LeadData): LeadField[] {
   ];
 }
 
-function renderHtmlRows(fields: LeadField[]): string {
-  return fields
-    .map(
-      (field) => `
-      <tr>
-        <td style="padding:10px 12px;border:1px solid #d9dee7;background:#f9fafb;font-weight:600;width:34%;">${escapeHtml(field.label)}</td>
-        <td style="padding:10px 12px;border:1px solid #d9dee7;">${escapeHtml(normalizeString(field.value))}</td>
-      </tr>`,
-    )
-    .join("");
-}
-
 function renderTextRows(fields: LeadField[]): string {
   return fields.map((field) => `${field.label}: ${normalizeString(field.value)}`).join("\n");
 }
@@ -137,6 +125,31 @@ function renderLeadClientSummaryRows(fields: LeadField[]): string {
     .join("");
 }
 
+function renderLeadInternalRows(fields: LeadField[]): string {
+  return fields
+    .map(
+      (field) => `
+      <tr>
+        <td style="padding:11px 13px;border:1px solid #dde3ed;background:#f4f7fc;width:36%;font-size:12px;letter-spacing:0.03em;text-transform:uppercase;font-weight:700;color:#475569;">
+          ${escapeHtml(field.label)}
+        </td>
+        <td style="padding:11px 13px;border:1px solid #dde3ed;background:#ffffff;font-size:14px;color:#0f172a;font-weight:600;">
+          ${escapeHtml(normalizeString(field.value))}
+        </td>
+      </tr>`,
+    )
+    .join("");
+}
+
+function getLeadMetadataFields(metadata: LeadRequestMetadata): LeadField[] {
+  return [
+    { label: "Fecha de envio", value: metadata.submittedAtIso },
+    { label: "IP", value: metadata.ipAddress },
+    { label: "User Agent", value: metadata.userAgent },
+    { label: "Referer", value: metadata.referer },
+  ];
+}
+
 function getLeadProfileLabel(lead: LeadData): string {
   return lead.tipoUsuario === "productor" ? "Perfil Productor" : "Perfil Inversor";
 }
@@ -162,24 +175,137 @@ export function buildInternalLeadEmail(
   metadata: LeadRequestMetadata,
   inboxEmail: string,
 ): MailjetOutboundEmail {
-  const allFields: LeadField[] = [
-    ...getLeadCommonFields(lead),
-    ...getLeadSpecificFields(lead),
-    { label: "Fecha de envio", value: metadata.submittedAtIso },
-    { label: "IP", value: metadata.ipAddress },
-    { label: "User Agent", value: metadata.userAgent },
-    { label: "Referer", value: metadata.referer },
-  ];
+  const commonFields = getLeadCommonFields(lead);
+  const specificFields = getLeadSpecificFields(lead);
+  const metadataFields = getLeadMetadataFields(metadata);
+  const leadProfile = getLeadProfileLabel(lead);
+  const leadFullName = `${lead.nombre} ${lead.apellido}`.trim();
+  const subject = `[Lead ${lead.tipoUsuario.toUpperCase()}] ${leadFullName} - ${lead.empresa}`;
+  const replyMailHref = `mailto:${encodeURIComponent(lead.email)}?subject=${encodeURIComponent("Alliance 2.0 - Seguimiento comercial")}`;
+  const phoneHrefValue = lead.telefono.replace(/[^+\d]/g, "");
+  const phoneHref = `tel:${phoneHrefValue.length > 0 ? phoneHrefValue : lead.telefono}`;
+  const safeLeadName = escapeHtml(leadFullName);
+  const safeLeadCompany = escapeHtml(lead.empresa);
+  const safeLeadProfile = escapeHtml(leadProfile);
+  const safeLeadEmail = escapeHtml(lead.email);
+  const safeLeadPhone = escapeHtml(lead.telefono);
 
-  const subject = `[Lead ${lead.tipoUsuario.toUpperCase()}] ${lead.nombre} ${lead.apellido} - ${lead.empresa}`;
-  const textPart = `Nuevo lead recibido\n\n${renderTextRows(allFields)}`;
+  const textPart = [
+    "Nuevo lead recibido",
+    "",
+    `Perfil: ${leadProfile}`,
+    `Lead: ${leadFullName}`,
+    `Empresa: ${lead.empresa}`,
+    `Email: ${lead.email}`,
+    `Telefono: ${lead.telefono}`,
+    "",
+    "--- Datos generales ---",
+    renderTextRows(commonFields),
+    "",
+    `--- ${leadProfile} - Detalle ---`,
+    renderTextRows(specificFields),
+    "",
+    "--- Trazabilidad tecnica ---",
+    renderTextRows(metadataFields),
+  ].join("\n");
 
   const htmlPart = `
-    <div style="font-family:Arial,Helvetica,sans-serif;color:#0f172a;line-height:1.45;">
-      <h2 style="margin:0 0 14px;">Nuevo lead recibido</h2>
-      <p style="margin:0 0 14px;">Se registro un nuevo ${escapeHtml(lead.tipoUsuario)} en el formulario web.</p>
-      <table style="border-collapse:collapse;width:100%;max-width:840px;font-size:14px;">
-        ${renderHtmlRows(allFields)}
+    <div style="margin:0;padding:0;background:#eef3fb;font-family:Arial,Helvetica,sans-serif;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#eef3fb;">
+        <tr>
+          <td align="center" style="padding:26px 12px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:780px;border:1px solid #d3dce8;border-radius:16px;overflow:hidden;background:#ffffff;">
+              <tr>
+                <td style="padding:20px 24px;background:linear-gradient(120deg,#0b0f19 0%,#13243f 100%);border-bottom:1px solid #22324f;">
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <tr>
+                      <td valign="middle">
+                        <img src="https://ceapargentina.com/ceap-white.png" width="128" alt="CEAP" style="display:block;border:0;outline:none;text-decoration:none;height:auto;max-width:128px;" />
+                      </td>
+                      <td align="right" valign="middle" style="font-size:11px;letter-spacing:0.05em;text-transform:uppercase;color:#95afcf;font-weight:700;">
+                        Nuevo lead comercial
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding:20px 24px 8px;">
+                  <span style="display:inline-block;padding:6px 10px;border-radius:999px;background:#e9f4ff;border:1px solid #b7d9ff;font-size:11px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:#1d4d89;">
+                    ${safeLeadProfile}
+                  </span>
+                  <h2 style="margin:12px 0 0;font-size:24px;line-height:1.25;color:#0f172a;font-weight:800;">
+                    ${safeLeadName}
+                  </h2>
+                  <p style="margin:6px 0 0;font-size:14px;color:#334155;font-weight:600;">
+                    ${safeLeadCompany}
+                  </p>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding:10px 24px 0;">
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td style="border-radius:999px;background:#00e5ff;">
+                        <a href="${replyMailHref}" style="display:inline-block;padding:11px 18px;font-size:12px;font-weight:800;letter-spacing:0.02em;color:#03141d;text-decoration:none;">
+                          Responder lead
+                        </a>
+                      </td>
+                      <td style="width:10px;">&nbsp;</td>
+                      <td style="border-radius:999px;background:#0f172a;">
+                        <a href="${phoneHref}" style="display:inline-block;padding:11px 18px;font-size:12px;font-weight:800;letter-spacing:0.02em;color:#f8fafc;text-decoration:none;">
+                          Llamar ${safeLeadPhone}
+                        </a>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding:18px 24px 0;font-size:14px;color:#334155;line-height:1.55;">
+                  <strong style="color:#0f172a;">Contacto principal:</strong>
+                  <a href="mailto:${escapeHtml(lead.email)}" style="color:#0069b4;text-decoration:none;"> ${safeLeadEmail}</a>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding:20px 24px 0;">
+                  <h3 style="margin:0 0 10px;font-size:15px;line-height:1.3;color:#0f172a;font-weight:800;letter-spacing:0.02em;text-transform:uppercase;">Datos generales</h3>
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;">
+                    ${renderLeadInternalRows(commonFields)}
+                  </table>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding:20px 24px 0;">
+                  <h3 style="margin:0 0 10px;font-size:15px;line-height:1.3;color:#0f172a;font-weight:800;letter-spacing:0.02em;text-transform:uppercase;">${safeLeadProfile} - Detalle</h3>
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;">
+                    ${renderLeadInternalRows(specificFields)}
+                  </table>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding:20px 24px 24px;">
+                  <h3 style="margin:0 0 10px;font-size:15px;line-height:1.3;color:#0f172a;font-weight:800;letter-spacing:0.02em;text-transform:uppercase;">Trazabilidad tecnica</h3>
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;">
+                    ${renderLeadInternalRows(metadataFields)}
+                  </table>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding:12px 24px;background:#f8fafc;border-top:1px solid #d9e2ef;font-size:11px;line-height:1.55;color:#64748b;">
+                  Generado automaticamente desde ceapargentina.com · Alliance 2.0
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
       </table>
     </div>
   `;
