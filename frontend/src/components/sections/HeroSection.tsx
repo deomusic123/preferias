@@ -4,9 +4,9 @@ import { HeroGlobeBackground } from "@/components/sections/HeroGlobeBackground";
 export function HeroSection() {
   return (
     <section id="inicio" className="relative isolate overflow-hidden pt-16 md:pt-24">
-      <HeroGlobeBackground className="pointer-events-none absolute inset-0 -z-20" />
+      <HeroGlobeBackground className="pointer-events-none absolute inset-0 -z-20 [mask-image:linear-gradient(to_bottom,black_0%,black_72%,transparent_100%)]" />
 
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_72%_38%,rgb(0_229_255_/_0.12),transparent_40%),linear-gradient(90deg,rgb(8_12_21_/_0.9)_0%,rgb(8_12_21_/_0.5)_45%,rgb(8_12_21_/_0.2)_100%)]" />
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_72%_36%,rgb(0_229_255_/_0.10),transparent_44%),linear-gradient(90deg,rgb(8_12_21_/_0.68)_0%,rgb(8_12_21_/_0.34)_42%,rgb(8_12_21_/_0)_84%)] [mask-image:linear-gradient(to_bottom,black_0%,black_70%,transparent_100%)]" />
 
       <div className="section-shell grid min-h-[620px] gap-10 pb-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:pb-14">
         <div className="space-y-8">

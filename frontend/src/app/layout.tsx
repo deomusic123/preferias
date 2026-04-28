@@ -44,8 +44,11 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${inter.variable} ${montserrat.variable} h-full antialiased`}
     >
-      <body suppressHydrationWarning className="min-h-full flex flex-col">
-        {children}
+      <body suppressHydrationWarning className="min-h-full">
+        <div className="app-page">
+          <div aria-hidden="true" className="app-background" />
+          <div className="app-content">{children}</div>
+        </div>
       </body>
     </html>
   );

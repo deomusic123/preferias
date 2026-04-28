@@ -23,11 +23,48 @@ body {
 }
 
 body {
-  background: radial-gradient(circle at top right, rgb(0 229 255 / 0.12), transparent 42%),
-    radial-gradient(circle at bottom left, rgb(212 175 55 / 0.07), transparent 38%),
-    var(--color-bg);
+  background: var(--color-bg);
   color: var(--color-text-main);
   font-family: var(--font-inter), sans-serif;
+  overflow-x: clip;
+}
+
+.app-page {
+  position: relative;
+  min-height: 100dvh;
+  overflow-x: clip;
+}
+
+.app-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 100dvh;
+  flex-direction: column;
+}
+
+.app-background {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 16% 14%, rgb(0 229 255 / 0.14), transparent 46%),
+    radial-gradient(circle at 86% 78%, rgb(212 175 55 / 0.11), transparent 44%),
+    radial-gradient(circle at 48% 44%, rgb(33 52 82 / 0.24), transparent 64%),
+    linear-gradient(180deg, #0b0f19 0%, #0b0f19 100%);
+}
+
+.app-background::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.28;
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.035) 1px, transparent 1px);
+  background-size: 58px 58px, 58px 58px;
+  mask-image: radial-gradient(circle at center, black 42%, transparent 100%);
 }
 
 a {
