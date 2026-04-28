@@ -121,6 +121,42 @@ function getLeadSummaryFields(lead: LeadData): LeadField[] {
   ];
 }
 
+function renderLeadClientSummaryRows(fields: LeadField[]): string {
+  return fields
+    .map(
+      (field) => `
+      <tr>
+        <td style="padding:12px 14px;border:1px solid #263246;background:#101a2b;width:40%;font-size:12px;letter-spacing:0.03em;text-transform:uppercase;font-weight:700;color:#8aa1c5;">
+          ${escapeHtml(field.label)}
+        </td>
+        <td style="padding:12px 14px;border:1px solid #263246;background:#0e1624;font-size:14px;font-weight:600;color:#f3f4f6;">
+          ${escapeHtml(normalizeString(field.value))}
+        </td>
+      </tr>`,
+    )
+    .join("");
+}
+
+function getLeadProfileLabel(lead: LeadData): string {
+  return lead.tipoUsuario === "productor" ? "Perfil Productor" : "Perfil Inversor";
+}
+
+function getLeadIntroText(lead: LeadData): string {
+  if (lead.tipoUsuario === "productor") {
+    return "Gracias por compartir tu capacidad productiva y objetivos de expansion comercial.";
+  }
+
+  return "Gracias por compartir tu perfil de inversion y foco estrategico.";
+}
+
+function getLeadNextStepText(lead: LeadData): string {
+  if (lead.tipoUsuario === "productor") {
+    return "Nuestro equipo evaluara tu perfil y preparara una hoja de ruta comercial inicial para potenciales convenios internacionales.";
+  }
+
+  return "Nuestro equipo evaluara tu perfil y preparara una hoja de ruta inicial con oportunidades alineadas a tu rango y horizonte de inversion.";
+}
+
 export function buildInternalLeadEmail(
   lead: LeadData,
   metadata: LeadRequestMetadata,
@@ -166,38 +202,121 @@ export function buildLeadConfirmationEmail(lead: LeadData): MailjetOutboundEmail
       ? "Recibimos tu solicitud de Productor | Alliance 2.0"
       : "Recibimos tu solicitud de Inversor | Alliance 2.0";
 
-  const introText =
-    lead.tipoUsuario === "productor"
-      ? "Gracias por compartir tu perfil productivo. Nuestro equipo comercial lo esta revisando."
-      : "Gracias por compartir tu perfil de inversion. Nuestro equipo comercial lo esta revisando.";
-
-  const nextStepsText =
-    "En un plazo maximo de 48 horas habiles te enviaremos una primera evaluacion y proximos pasos.";
+  const introText = getLeadIntroText(lead);
+  const nextStepText = getLeadNextStepText(lead);
+  const profileLabel = getLeadProfileLabel(lead);
+  const ctaUrl = "https://ceapargentina.com";
+  const supportEmail = "ceapargentina@proton.me";
+  const firstName = escapeHtml(lead.nombre);
+  const safeProfileLabel = escapeHtml(profileLabel);
+  const summaryRows = renderLeadClientSummaryRows(summaryFields);
 
   const textPart = [
     `Hola ${lead.nombre},`,
     "",
     introText,
-    nextStepsText,
+    nextStepText,
+    "En un plazo maximo de 48 horas habiles recibirias una respuesta inicial de nuestro equipo.",
     "",
     "Resumen de tu solicitud:",
     renderTextRows(summaryFields),
     "",
-    "Si necesitas actualizar datos, responde este correo.",
+    `Si necesitas actualizar datos, escribe a ${supportEmail}.`,
     "",
     "Equipo Alliance 2.0",
   ].join("\n");
 
   const htmlPart = `
-    <div style="font-family:Arial,Helvetica,sans-serif;color:#0f172a;line-height:1.5;">
-      <h2 style="margin:0 0 12px;">Hola ${escapeHtml(lead.nombre)},</h2>
-      <p style="margin:0 0 10px;">${escapeHtml(introText)}</p>
-      <p style="margin:0 0 16px;">${escapeHtml(nextStepsText)}</p>
-      <table style="border-collapse:collapse;width:100%;max-width:680px;font-size:14px;margin-bottom:16px;">
-        ${renderHtmlRows(summaryFields)}
+    <div style="margin:0;padding:0;background:#070c14;font-family:Arial,Helvetica,sans-serif;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#070c14;">
+        <tr>
+          <td align="center" style="padding:26px 12px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:680px;border:1px solid #22304a;border-radius:18px;overflow:hidden;background:#0b0f19;">
+              <tr>
+                <td style="padding:22px 24px;background:linear-gradient(120deg,#0b0f19 0%,#10203a 100%);border-bottom:1px solid #23324d;">
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <tr>
+                      <td valign="middle">
+                        <img src="https://ceapargentina.com/ceap-white.png" width="132" alt="CEAP" style="display:block;border:0;outline:none;text-decoration:none;height:auto;max-width:132px;" />
+                      </td>
+                      <td align="right" valign="middle" style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#8aa1c5;font-weight:700;">
+                        Alliance 2.0
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding:24px 24px 6px;">
+                  <span style="display:inline-block;padding:6px 10px;border-radius:999px;background:#10233f;border:1px solid #2a4470;font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:#8fd9ff;">
+                    ${safeProfileLabel}
+                  </span>
+                  <h2 style="margin:14px 0 0;font-size:28px;line-height:1.2;color:#f3f4f6;font-weight:700;">
+                    Hola ${firstName}, recibimos tu solicitud.
+                  </h2>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding:12px 24px 0;font-size:15px;line-height:1.6;color:#c9d4e6;">
+                  <p style="margin:0 0 10px;">${escapeHtml(introText)}</p>
+                  <p style="margin:0;">${escapeHtml(nextStepText)}</p>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding:18px 24px 0;">
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid #2f4b74;border-radius:12px;background:#0d1f36;">
+                    <tr>
+                      <td style="padding:14px 16px;font-size:13px;line-height:1.55;color:#d4e7ff;">
+                        <strong style="display:block;margin-bottom:6px;font-size:13px;letter-spacing:0.04em;text-transform:uppercase;color:#00e5ff;">Proximo paso</strong>
+                        Dentro de las proximas 48 horas habiles te enviaremos una respuesta inicial de nuestro equipo comercial.
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding:22px 24px 0;">
+                  <h3 style="margin:0 0 10px;font-size:16px;line-height:1.3;color:#f3f4f6;font-weight:700;">Resumen de tu solicitud</h3>
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;">
+                    ${summaryRows}
+                  </table>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding:24px;">
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td style="border-radius:999px;background:#00e5ff;">
+                        <a href="${ctaUrl}" style="display:inline-block;padding:12px 20px;font-size:13px;font-weight:700;letter-spacing:0.02em;color:#03141d;text-decoration:none;">
+                          Ver sitio oficial
+                        </a>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding:0 24px 24px;font-size:13px;line-height:1.55;color:#9eb0cb;">
+                  Si deseas actualizar informacion o sumar contexto adicional, responde este correo o escribe a
+                  <a href="mailto:${supportEmail}" style="color:#00e5ff;text-decoration:none;">${supportEmail}</a>.
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding:14px 24px;background:#0a1220;border-top:1px solid #1f2b43;font-size:11px;line-height:1.5;color:#6f819c;">
+                  CEAP Argentina · Plataforma B2B para convenios internacionales de comercio exterior.
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
       </table>
-      <p style="margin:0;">Si necesitas actualizar datos, responde este correo.</p>
-      <p style="margin:10px 0 0;">Equipo Alliance 2.0</p>
     </div>
   `;
 
