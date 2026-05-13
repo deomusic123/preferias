@@ -1,4 +1,4 @@
-export const COMPANY_NAME = "CEAP Argentina";
+export const COMPANY_NAME = "Camara Argentina de Empresarios del Pacífico";
 
 export const NAV_LINKS = [
   { label: "Valor", href: "#valor" },

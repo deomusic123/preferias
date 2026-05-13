@@ -181,7 +181,7 @@ export function buildInternalLeadEmail(
   const leadProfile = getLeadProfileLabel(lead);
   const leadFullName = `${lead.nombre} ${lead.apellido}`.trim();
   const subject = `[Lead ${lead.tipoUsuario.toUpperCase()}] ${leadFullName} - ${lead.empresa}`;
-  const replyMailHref = `mailto:${encodeURIComponent(lead.email)}?subject=${encodeURIComponent("Alliance 2.0 - Seguimiento comercial")}`;
+  const replyMailHref = `mailto:${encodeURIComponent(lead.email)}?subject=${encodeURIComponent("CEAP - Seguimiento comercial")}`;
   const phoneHrefValue = lead.telefono.replace(/[^+\d]/g, "");
   const phoneHref = `tel:${phoneHrefValue.length > 0 ? phoneHrefValue : lead.telefono}`;
   const safeLeadName = escapeHtml(leadFullName);
@@ -300,7 +300,7 @@ export function buildInternalLeadEmail(
 
               <tr>
                 <td style="padding:12px 24px;background:#f8fafc;border-top:1px solid #d9e2ef;font-size:11px;line-height:1.55;color:#64748b;">
-                  Generado automaticamente desde ceapargentina.com · Alliance 2.0
+                  Generado automaticamente desde ceapargentina.com · CEAP (Camara Argentina de Empresarios del Pacífico)
                 </td>
               </tr>
             </table>
@@ -325,8 +325,8 @@ export function buildLeadConfirmationEmail(lead: LeadData): MailjetOutboundEmail
   const summaryFields = getLeadSummaryFields(lead);
   const subject =
     lead.tipoUsuario === "productor"
-      ? "Recibimos tu solicitud de Productor | Alliance 2.0"
-      : "Recibimos tu solicitud de Inversor | Alliance 2.0";
+      ? "Recibimos tu solicitud de Productor | CEAP"
+      : "Recibimos tu solicitud de Inversor | CEAP";
 
   const introText = getLeadIntroText(lead);
   const nextStepText = getLeadNextStepText(lead);
@@ -349,7 +349,7 @@ export function buildLeadConfirmationEmail(lead: LeadData): MailjetOutboundEmail
     "",
     `Si necesitas actualizar datos, escribe a ${supportEmail}.`,
     "",
-    "Equipo Alliance 2.0",
+    "Equipo CEAP",
   ].join("\n");
 
   const htmlPart = `
@@ -366,7 +366,7 @@ export function buildLeadConfirmationEmail(lead: LeadData): MailjetOutboundEmail
                         <img src="https://ceapargentina.com/ceap-white.png" width="132" alt="CEAP" style="display:block;border:0;outline:none;text-decoration:none;height:auto;max-width:132px;" />
                       </td>
                       <td align="right" valign="middle" style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#8aa1c5;font-weight:700;">
-                        Alliance 2.0
+                        CEAP
                       </td>
                     </tr>
                   </table>
@@ -436,7 +436,7 @@ export function buildLeadConfirmationEmail(lead: LeadData): MailjetOutboundEmail
 
               <tr>
                 <td style="padding:14px 24px;background:#0a1220;border-top:1px solid #1f2b43;font-size:11px;line-height:1.5;color:#6f819c;">
-                  CEAP Argentina · Plataforma B2B para convenios internacionales de comercio exterior.
+                  CEAP · Camara Argentina de Empresarios del Pacífico · Plataforma B2B para convenios internacionales de comercio exterior.
                 </td>
               </tr>
             </table>

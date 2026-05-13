@@ -19,16 +19,17 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Camara Argentina de Empresarios | CEAP Argentina",
-    template: "%s | CEAP Argentina",
+    default: "Camara Argentina de Empresarios del Pacífico | CEAP",
+    template: "%s | CEAP",
   },
   description:
-    "Camara Argentina de Empresarios (CEAP): conectamos productores e inversores para convenios internacionales, expansion comercial y oportunidades reales de comercio exterior.",
+    "Camara Argentina de Empresarios del Pacífico (CEAP): conectamos productores e inversores para convenios internacionales, expansion comercial y oportunidades reales de comercio exterior.",
   keywords: [
     "camara argentina",
     "camara de empresarios",
     "camara argentina de empresarios",
-    "ceap argentina",
+    "camara argentina de empresarios del pacifico",
+    "ceap",
     "convenios internacionales",
     "comercio exterior argentina",
     "productores e inversores",
@@ -38,13 +39,13 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   category: "business",
-  applicationName: "CEAP Argentina",
+  applicationName: "CEAP",
   openGraph: {
-    title: "Camara Argentina de Empresarios | CEAP Argentina",
+    title: "Camara Argentina de Empresarios del Pacífico | CEAP",
     description:
-      "Plataforma B2B de la Camara Argentina de Empresarios para conectar productores e inversores con oportunidades de comercio exterior.",
+      "Plataforma B2B de la Camara Argentina de Empresarios del Pacífico para conectar productores e inversores con oportunidades de comercio exterior.",
     url: SITE_URL,
-    siteName: "CEAP Argentina",
+    siteName: "CEAP",
     type: "website",
     locale: "es_AR",
     images: [
@@ -52,15 +53,15 @@ export const metadata: Metadata = {
         url: "/ceap.png",
         width: 1200,
         height: 630,
-        alt: "Camara Argentina de Empresarios - CEAP",
+        alt: "Camara Argentina de Empresarios del Pacífico - CEAP",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Camara Argentina de Empresarios | CEAP Argentina",
+    title: "Camara Argentina de Empresarios del Pacífico | CEAP",
     description:
-      "CEAP Argentina conecta productores e inversores con oportunidades reales de comercio exterior.",
+      "CEAP, Camara Argentina de Empresarios del Pacífico, conecta productores e inversores con oportunidades reales de comercio exterior.",
     images: ["/ceap.png"],
   },
   robots: {

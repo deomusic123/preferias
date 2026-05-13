@@ -95,7 +95,7 @@ export function getMailjetConfigurationFromEnv(): MailjetConfigResult {
       apiKey: process.env.MAILJET_API_KEY as string,
       apiSecret: process.env.MAILJET_API_SECRET as string,
       fromEmail: process.env.MAILJET_FROM_EMAIL as string,
-      fromName: process.env.MAILJET_FROM_NAME?.trim() || "Alliance 2.0",
+      fromName: process.env.MAILJET_FROM_NAME?.trim() || "CEAP",
       leadInboxEmail: process.env.LEAD_INBOX_EMAIL as string,
       replyToEmail: process.env.MAILJET_REPLY_TO_EMAIL?.trim() || undefined,
       replyToName: process.env.MAILJET_REPLY_TO_NAME?.trim() || undefined,

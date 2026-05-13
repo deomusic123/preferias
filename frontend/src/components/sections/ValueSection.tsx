@@ -10,12 +10,9 @@ export function ValueSection() {
         <div className="mb-10 space-y-3">
           <p className="font-display text-sm uppercase tracking-[0.18em] text-gold">Propuesta de valor</p>
           <h2 className="section-heading text-3xl font-semibold md:text-4xl">
-            Camara de Empresarios con enfoque comercial, operacional y estratégico.
-          </h2>
+          Diseño comercial, operacional y estratégico para convertir oportunidades en convenios.</h2>
           <p className="max-w-3xl text-text-muted">
-            La Camara Argentina de Empresarios CEAP combina inteligencia comercial, conexion internacional
-            y calificacion de oportunidades para acelerar decisiones de negocio.
-          </p>
+             CEAP combina inteligencia comercial, conexión internacional y calificación de oportunidades para acelerar decisiones de negocio.</p>
         </div>
 
         <div className="grid gap-5 md:grid-cols-2">

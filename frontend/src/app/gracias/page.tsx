@@ -3,9 +3,9 @@ import { CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Gracias | CEAP Argentina",
+  title: "Gracias | CEAP",
   description:
-    "Tu solicitud fue enviada. El equipo de la Camara Argentina de Empresarios revisará tu perfil para avanzar con el diagnóstico.",
+    "Tu solicitud fue enviada. El equipo de la Camara Argentina de Empresarios del Pacífico revisara tu perfil para avanzar con el diagnostico.",
 };
 
 export default function ThankYouPage() {
@@ -15,7 +15,7 @@ export default function ThankYouPage() {
         <CheckCircle2 className="mx-auto h-12 w-12 text-accent" aria-hidden="true" />
         <p className="mt-5 font-display text-xs uppercase tracking-[0.18em] text-gold">Solicitud recibida</p>
         <h1 className="section-heading mt-3 text-3xl font-semibold md:text-4xl">
-          Gracias por contactar a CEAP Argentina.
+          Gracias por contactar a CEAP.
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-text-muted md:text-base">
           Revisaremos tu perfil y te contactaremos para compartir una ruta de acción inicial según tu

@@ -13,9 +13,9 @@ import { ValueSection } from "@/components/sections/ValueSection";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://ceapargentina.com";
 
 export const metadata: Metadata = {
-  title: "Camara Argentina de Empresarios (CEAP) | Camara de Empresarios en Argentina",
+  title: "Camara Argentina de Empresarios del Pacífico (CEAP) | Camara de Empresarios en Argentina",
   description:
-    "Camara Argentina de Empresarios (CEAP): plataforma para productores e inversores que buscan convenios internacionales, expansion comercial y oportunidades reales de comercio exterior.",
+    "Camara Argentina de Empresarios del Pacífico (CEAP): plataforma para productores e inversores que buscan convenios internacionales, expansion comercial y oportunidades reales de comercio exterior.",
   alternates: {
     canonical: "/",
   },
@@ -27,19 +27,19 @@ export default function Home() {
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "Camara Argentina de Empresarios",
-    alternateName: "CEAP Argentina",
+    name: "Camara Argentina de Empresarios del Pacífico",
+    alternateName: "CEAP",
     url: SITE_URL,
     logo: `${SITE_URL}/ceap.png`,
     sameAs: [SITE_URL],
     description:
-      "Camara Argentina de Empresarios orientada a conectar productores e inversores con oportunidades de comercio exterior.",
+      "Camara Argentina de Empresarios del Pacífico orientada a conectar productores e inversores con oportunidades de comercio exterior.",
   };
 
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "CEAP Argentina",
+    name: "CEAP",
     url: SITE_URL,
     inLanguage: "es-AR",
     potentialAction: {
@@ -81,11 +81,11 @@ export default function Home() {
         <HeroSection />
         <AuthorityBand />
         <ValueSection />
-        <SeoFaqSection />
         <InteractiveMapSection />
         <LeadMagnetSection />
         <LeadFormSection />
         <ClosingCtaSection />
+        <SeoFaqSection />
       </main>
       <SiteFooter />
     </>

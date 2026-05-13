@@ -1,8 +1,8 @@
 const FAQ_ITEMS = [
   {
-    question: "Que es la Camara Argentina de Empresarios?",
+    question: "Que es la Camara Argentina de Empresarios del Pacífico?",
     answer:
-      "La Camara Argentina de Empresarios (CEAP) es una plataforma B2B que conecta productores e inversores con oportunidades de expansion comercial y convenios internacionales.",
+      "La Camara Argentina de Empresarios del Pacífico (CEAP) es una plataforma B2B que conecta productores e inversores con oportunidades de expansion comercial y convenios internacionales.",
   },
   {
     question: "Como funciona CEAP para productores?",
@@ -23,15 +23,15 @@ const FAQ_ITEMS = [
 
 export function SeoFaqSection() {
   return (
-    <section id="faq-camara" className="mt-20 md:mt-28" aria-label="Preguntas frecuentes de la Camara Argentina de Empresarios">
+    <section id="faq-camara" className="mt-20 md:mt-28" aria-label="Preguntas frecuentes de la Camara Argentina de Empresarios del Pacífico">
       <div className="section-shell">
         <div className="mb-10 space-y-3">
           <p className="font-display text-sm uppercase tracking-[0.18em] text-gold">FAQ estrategico</p>
           <h2 className="section-heading text-3xl font-semibold md:text-4xl">
-            Camara Argentina de Empresarios: preguntas frecuentes
+            Camara Argentina de Empresarios del Pacífico: preguntas frecuentes
           </h2>
           <p className="max-w-3xl text-text-muted">
-            Respuestas claras sobre como CEAP Argentina conecta productores, inversores y oportunidades de comercio exterior.
+            Respuestas claras sobre como CEAP conecta productores, inversores y oportunidades de comercio exterior.
           </p>
         </div>
 

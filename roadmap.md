@@ -78,3 +78,36 @@ Fortalecer SEO tecnico y on-page para posicionamiento de CEAP en busquedas relac
 - FAQ SEO: `frontend/src/components/sections/SeoFaqSection.tsx`
 - Hero y valor optimizados: `frontend/src/components/sections/HeroSection.tsx`, `frontend/src/components/sections/ValueSection.tsx`
 - Consistencia de marca secundaria: `frontend/src/app/gracias/page.tsx`, `frontend/src/app/legal/privacidad/page.tsx`, `frontend/src/app/legal/terminos/page.tsx`, `frontend/src/app/legal/cookies/page.tsx`
+
+### 2026-05-13 - Correccion institucional de naming CEAP
+
+#### Objetivo
+Unificar en toda la experiencia digital que CEAP significa "Camara Argentina de Empresarios del Pacífico" y eliminar variantes de marca inconsistentes.
+
+#### Gates
+- Gate 1: Ajustar metadata global y metadata de home con naming institucional.
+- Gate 2: Ajustar copy clave en Hero, Value, FAQ y Footer.
+- Gate 3: Ajustar naming en pagina de gracias y documentos legales.
+- Gate 4: Eliminar referencias legacy de "Alliance 2.0" en correos Mailjet.
+- Gate 5: Validar lint/build sin errores de compilacion.
+
+#### Evidencia
+- Metadata y schemas: `frontend/src/app/layout.tsx`, `frontend/src/app/page.tsx`
+- Home content: `frontend/src/components/sections/HeroSection.tsx`, `frontend/src/components/sections/ValueSection.tsx`, `frontend/src/components/sections/SeoFaqSection.tsx`, `frontend/src/components/layout/SiteFooter.tsx`
+- Nombre corporativo: `frontend/src/lib/constants.ts`
+- Paginas secundarias: `frontend/src/app/gracias/page.tsx`, `frontend/src/app/legal/privacidad/page.tsx`, `frontend/src/app/legal/terminos/page.tsx`, `frontend/src/app/legal/cookies/page.tsx`
+- Correos transaccionales: `frontend/src/lib/mail/leadEmails.ts`, `frontend/src/lib/mail/mailjet.ts`
+
+### 2026-05-13 - Publicacion de cambios pendientes + FAQ al final
+
+#### Objetivo
+Publicar todos los cambios pendientes en `main` y dejar la seccion FAQ al final de la home, justo antes del footer.
+
+#### Gates
+- Gate 1: Validar lint y build de produccion antes de publicar.
+- Gate 2: Ajustar orden de secciones para mover FAQ al final del contenido principal.
+- Gate 3: Hacer push a `origin/main` para disparar deploy en Vercel.
+
+#### Evidencia
+- Orden de home actualizado: `frontend/src/app/page.tsx`
+- Validacion tecnica: `npm run lint`, `npm run build`

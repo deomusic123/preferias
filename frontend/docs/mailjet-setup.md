@@ -21,7 +21,7 @@ Agregar estas variables en el proyecto de Vercel:
 - `MAILJET_API_KEY`
 - `MAILJET_API_SECRET`
 - `MAILJET_FROM_EMAIL`
-- `MAILJET_FROM_NAME` (ej. `Alliance 2.0`)
+- `MAILJET_FROM_NAME` (ej. `CEAP`)
 - `LEAD_INBOX_EMAIL` (casilla que recibe la ficha completa del lead)
 - `MAILJET_REPLY_TO_EMAIL` (opcional)
 - `MAILJET_REPLY_TO_NAME` (opcional)
