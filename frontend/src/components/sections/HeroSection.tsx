@@ -11,16 +11,16 @@ export function HeroSection() {
       <div className="section-shell grid min-h-[620px] gap-10 pb-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:pb-14">
         <div className="space-y-8">
           <p className="inline-flex rounded-full border border-accent/40 bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-accent">
-            Convenios internacionales de comex
+            Camara argentina de empresarios
           </p>
 
           <div className="space-y-4">
             <h1 className="section-heading text-4xl font-semibold text-text-main md:text-6xl">
-              Escalamos productores e inversores hacia mercados internacionales.
+              Camara Argentina de Empresarios: productores e inversores hacia mercados internacionales.
             </h1>
             <p className="max-w-2xl text-base text-text-muted md:text-lg">
-              Diseñamos estructuras comerciales y acuerdos B2B para transformar capacidad productiva e
-              inversión en operaciones reales de comercio exterior.
+              CEAP, como camara de empresarios en Argentina, diseña estructuras comerciales y acuerdos B2B
+              para transformar capacidad productiva e inversion en operaciones reales de comercio exterior.
             </p>
           </div>
 

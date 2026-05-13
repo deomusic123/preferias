@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Política de Cookies | Alliance 2.0",
+  title: "Política de Cookies | CEAP Argentina",
 };
 
 export default function CookiesPage() {

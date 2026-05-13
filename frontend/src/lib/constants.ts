@@ -1,4 +1,4 @@
-export const COMPANY_NAME = "Alliance 2.0";
+export const COMPANY_NAME = "CEAP Argentina";
 
 export const NAV_LINKS = [
   { label: "Valor", href: "#valor" },

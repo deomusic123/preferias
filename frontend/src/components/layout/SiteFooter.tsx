@@ -10,7 +10,7 @@ export function SiteFooter() {
             <span className="sr-only">CEAP</span>
           </div>
           <p className="text-sm text-text-muted">
-            Plataforma B2B para convenios internacionales de comercio exterior.
+            Camara Argentina de Empresarios (CEAP): plataforma B2B para convenios internacionales de comercio exterior.
           </p>
         </div>
 

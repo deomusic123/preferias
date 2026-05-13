@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Términos y Condiciones | Alliance 2.0",
+  title: "Términos y Condiciones | CEAP Argentina",
 };
 
 export default function TermsPage() {

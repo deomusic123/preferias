@@ -57,3 +57,24 @@ Elevar la calidad visual y operativa del correo interno de leads para el equipo 
 - Template interno actualizado: `frontend/src/lib/mail/leadEmails.ts`
 - Build OK: `npm run build`
 - Lint OK con warning preexistente: `npm run lint`
+
+### 2026-05-13 - Sprint SEO tecnico + contenido (Camara Argentina)
+
+#### Objetivo
+Fortalecer SEO tecnico y on-page para posicionamiento de CEAP en busquedas relacionadas con Camara Argentina y Camara de Empresarios.
+
+#### Gates
+- Gate 1: Metadata global y de home optimizada con enfoque de keyword principal.
+- Gate 2: Robots y sitemap implementados para indexacion controlada.
+- Gate 3: Datos estructurados (Organization, WebSite, FAQPage) en home.
+- Gate 4: Contenido semantico reforzado (H1/H2/copy/FAQ) orientado a intencion de busqueda.
+- Gate 5: Consistencia de marca SEO en paginas secundarias y validacion tecnica.
+
+#### Evidencia
+- Metadata global: `frontend/src/app/layout.tsx`
+- Metadata home + JSON-LD: `frontend/src/app/page.tsx`
+- Robots: `frontend/src/app/robots.ts`
+- Sitemap: `frontend/src/app/sitemap.ts`
+- FAQ SEO: `frontend/src/components/sections/SeoFaqSection.tsx`
+- Hero y valor optimizados: `frontend/src/components/sections/HeroSection.tsx`, `frontend/src/components/sections/ValueSection.tsx`
+- Consistencia de marca secundaria: `frontend/src/app/gracias/page.tsx`, `frontend/src/app/legal/privacidad/page.tsx`, `frontend/src/app/legal/terminos/page.tsx`, `frontend/src/app/legal/cookies/page.tsx`

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Montserrat } from "next/font/google";
 import "./globals.css";
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://ceapargentina.com";
+
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -15,21 +17,63 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "Alliance 2.0 | Convenios Internacionales de Comex",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Camara Argentina de Empresarios | CEAP Argentina",
+    template: "%s | CEAP Argentina",
+  },
   description:
-    "Plataforma B2B para conectar productores e inversores con oportunidades internacionales de comercio exterior.",
+    "Camara Argentina de Empresarios (CEAP): conectamos productores e inversores para convenios internacionales, expansion comercial y oportunidades reales de comercio exterior.",
+  keywords: [
+    "camara argentina",
+    "camara de empresarios",
+    "camara argentina de empresarios",
+    "ceap argentina",
+    "convenios internacionales",
+    "comercio exterior argentina",
+    "productores e inversores",
+    "corredor bioceanico",
+  ],
+  alternates: {
+    canonical: "/",
+  },
+  category: "business",
+  applicationName: "CEAP Argentina",
   openGraph: {
-    title: "Alliance 2.0",
+    title: "Camara Argentina de Empresarios | CEAP Argentina",
     description:
-      "Generación y calificación de oportunidades B2B para convenios internacionales de comex.",
+      "Plataforma B2B de la Camara Argentina de Empresarios para conectar productores e inversores con oportunidades de comercio exterior.",
+    url: SITE_URL,
+    siteName: "CEAP Argentina",
     type: "website",
-    locale: "es_CL",
+    locale: "es_AR",
+    images: [
+      {
+        url: "/ceap.png",
+        width: 1200,
+        height: 630,
+        alt: "Camara Argentina de Empresarios - CEAP",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Alliance 2.0",
+    title: "Camara Argentina de Empresarios | CEAP Argentina",
     description:
-      "Conectamos productores e inversores con oportunidades reales de comercio exterior.",
+      "CEAP Argentina conecta productores e inversores con oportunidades reales de comercio exterior.",
+    images: ["/ceap.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
 };
 
